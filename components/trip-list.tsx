@@ -3,6 +3,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,6 +17,18 @@ type Props = {
 }
 
 export default function TripList({ trips, totalsByTripId }: Props) {
+  const grand = trips.reduce(
+    (acc, t) => {
+      const tot = totalsByTripId.get(t.id)
+      acc.count += tot?.expense_count ?? 0
+      acc.total += Number(tot?.total_aed ?? 0)
+      acc.melly += Number(tot?.melly_share_aed ?? 0)
+      acc.ash += Number(tot?.ash_share_aed ?? 0)
+      return acc
+    },
+    { count: 0, total: 0, melly: 0, ash: 0 }
+  )
+
   return (
     <Table>
       <TableHeader>
@@ -64,6 +77,25 @@ export default function TripList({ trips, totalsByTripId }: Props) {
           )
         })}
       </TableBody>
+      <TableFooter className="border-t-2">
+        <TableRow className="hover:bg-transparent">
+          <TableCell className="pl-4 font-medium">Total</TableCell>
+          <TableCell />
+          <TableCell />
+          <TableCell className="text-right font-mono tabular-nums">
+            {grand.count}
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums font-medium">
+            {formatAed(grand.total)}
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums">
+            {formatAed(grand.melly)}
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums">
+            {formatAed(grand.ash)}
+          </TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   )
 }

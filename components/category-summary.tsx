@@ -39,7 +39,10 @@ export default function CategorySummary({ totals, categoriesByName }: Props) {
                   <div className="flex items-center gap-2">
                     <span
                       className="inline-block size-2 rounded-full"
-                      style={{ backgroundColor: cat?.color ?? "#94a3b8" }}
+                      style={{
+                        backgroundColor:
+                          cat?.color ?? "hsl(var(--muted-foreground))",
+                      }}
                     />
                     <span>{name}</span>
                     <span className="text-xs text-muted-foreground">

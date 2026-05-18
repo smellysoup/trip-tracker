@@ -2,6 +2,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -31,6 +32,16 @@ export default function ExpenseTable({
   categories,
   categoriesByName,
 }: Props) {
+  const totals = expenses.reduce(
+    (acc, e) => {
+      acc.total += Number(e.aed_price)
+      acc.melly += Number(shareFor(e.expense_splits, "Melly") ?? 0)
+      acc.ash += Number(shareFor(e.expense_splits, "Ash") ?? 0)
+      return acc
+    },
+    { total: 0, melly: 0, ash: 0 }
+  )
+
   return (
     <Table>
       <TableHeader>
@@ -123,6 +134,23 @@ export default function ExpenseTable({
           )
         })}
       </TableBody>
+      <TableFooter className="border-t-2">
+        <TableRow className="hover:bg-transparent">
+          <TableCell colSpan={4} className="pl-4 font-medium">
+            Total
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums font-medium">
+            {formatAed(totals.total)}
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums">
+            {formatAed(totals.melly)}
+          </TableCell>
+          <TableCell className="text-right font-mono tabular-nums">
+            {formatAed(totals.ash)}
+          </TableCell>
+          <TableCell colSpan={2} />
+        </TableRow>
+      </TableFooter>
     </Table>
   )
 }
