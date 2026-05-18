@@ -9,6 +9,7 @@ import type {
 } from "@/lib/types"
 import ExpenseTable from "@/components/expense-table"
 import CategorySummary from "@/components/category-summary"
+import TripActions from "@/components/trip-actions"
 import { formatAed, formatDateRange } from "@/lib/format"
 
 type ExpenseWithSplits = Expense & { expense_splits: ExpenseSplit[] }
@@ -58,9 +59,18 @@ export default async function TripPage({
 
   return (
     <div className="space-y-8">
-      <header className="space-y-2">
-        <div className="flex items-baseline justify-between gap-4">
-          <h1 className="text-2xl font-semibold tracking-tight">{trip.name}</h1>
+      <header className="space-y-3">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {trip.name}
+            </h1>
+            <TripActions
+              tripId={trip.id}
+              tripName={trip.name}
+              expenseCount={expenses.length}
+            />
+          </div>
           <div className="text-right">
             <div className="font-mono tabular-nums text-lg">
               {formatAed(totalAed)}
