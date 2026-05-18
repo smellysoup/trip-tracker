@@ -10,6 +10,7 @@ import type {
 import ExpenseTable from "@/components/expense-table"
 import CategorySummary from "@/components/category-summary"
 import TripActions from "@/components/trip-actions"
+import AddExpenseButton from "@/components/add-expense-button"
 import { formatAed, formatDateRange } from "@/lib/format"
 
 type ExpenseWithSplits = Expense & { expense_splits: ExpenseSplit[] }
@@ -65,11 +66,14 @@ export default async function TripPage({
             <h1 className="text-2xl font-semibold tracking-tight">
               {trip.name}
             </h1>
-            <TripActions
-              tripId={trip.id}
-              tripName={trip.name}
-              expenseCount={expenses.length}
-            />
+            <div className="flex flex-wrap items-center gap-2">
+              <TripActions
+                tripId={trip.id}
+                tripName={trip.name}
+                expenseCount={expenses.length}
+              />
+              <AddExpenseButton trip={trip} categories={categories} />
+            </div>
           </div>
           <div className="text-right">
             <div className="font-mono tabular-nums text-lg">
@@ -103,12 +107,17 @@ export default async function TripPage({
       </header>
 
       {expenses.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No expenses yet.</p>
+        <p className="text-sm text-muted-foreground">
+          No expenses yet. Click <span className="font-medium">Add expense</span>{" "}
+          to start.
+        </p>
       ) : (
         <>
           <section>
             <ExpenseTable
+              trip={trip}
               expenses={expenses}
+              categories={categories}
               categoriesByName={categoriesByName}
             />
           </section>

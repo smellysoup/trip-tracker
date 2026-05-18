@@ -7,13 +7,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import type { Category, Expense, ExpenseSplit } from "@/lib/types"
+import type { Category, Expense, ExpenseSplit, Trip } from "@/lib/types"
 import { formatAed, formatDate, formatNative } from "@/lib/format"
+import ExpenseRowActions from "@/components/expense-row-actions"
 
 type ExpenseWithSplits = Expense & { expense_splits: ExpenseSplit[] }
 
 type Props = {
+  trip: Trip
   expenses: ExpenseWithSplits[]
+  categories: Category[]
   categoriesByName: Map<string, Category>
 }
 
@@ -22,7 +25,12 @@ function shareFor(splits: ExpenseSplit[], who: "Melly" | "Ash"): number | null {
   return row ? Number(row.share_amount_aed) : null
 }
 
-export default function ExpenseTable({ expenses, categoriesByName }: Props) {
+export default function ExpenseTable({
+  trip,
+  expenses,
+  categories,
+  categoriesByName,
+}: Props) {
   return (
     <Table>
       <TableHeader>
@@ -35,6 +43,7 @@ export default function ExpenseTable({ expenses, categoriesByName }: Props) {
           <TableHead className="text-right">Melly</TableHead>
           <TableHead className="text-right">Ash</TableHead>
           <TableHead>Split</TableHead>
+          <TableHead className="w-20" aria-label="Actions" />
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -46,7 +55,7 @@ export default function ExpenseTable({ expenses, categoriesByName }: Props) {
           return (
             <TableRow
               key={e.id}
-              className="hover:bg-transparent border-border/60"
+              className="group hover:bg-transparent border-border/60"
             >
               <TableCell className="py-1 text-right font-mono tabular-nums text-muted-foreground">
                 {e.line_no}
@@ -102,6 +111,13 @@ export default function ExpenseTable({ expenses, categoriesByName }: Props) {
                     {e.split_type}
                   </Badge>
                 ) : null}
+              </TableCell>
+              <TableCell className="py-1 text-right">
+                <ExpenseRowActions
+                  trip={trip}
+                  expense={e}
+                  categories={categories}
+                />
               </TableCell>
             </TableRow>
           )
