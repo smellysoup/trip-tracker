@@ -87,7 +87,7 @@ trip-tracker/
 
 See `supabase/migrations/001_initial.sql` for the source of truth. High level:
 
-- **`categories`** — 5 seeded values: Hotel, Transportation, Food, Entertainment, Shopping
+- **`categories`** — 5 seeded values: Accommodation, Transportation, Food, Entertainment, Shopping
 - **`trips`** — name, dates, native_currency (ISO code), fx_rate_to_aed (default), participants
 - **`expenses`** — line_no, item, category, native price + AED price, fx_rate_used override, paid_by, split_type
 - **`expense_splits`** — one row per participant owing money on this expense
